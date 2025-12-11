@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import ListaSorteo from './pages/Sorteo/SorteoHome/ListaSorteo.jsx'
 import SorteoDetalle from './pages/Sorteo/SorteoDetalle/SorteoDetalle.jsx'
 import SorteoCreate from './pages/Sorteo/SorteoCreate/SorteoCreate.jsx'
@@ -14,7 +14,7 @@ import FormRegister from './pages/auth/Register/FormRegister.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<ListaSorteo />} />
         <Route path="/sorteo/:link" element={<SorteoDetalle />} />
@@ -23,10 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/sorteo/:link/inscribirse" element={<CreateParticipante />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
-        {/* Redirect /index.html to home (for Render SPA compatibility) */}
-        <Route path="/index.html" element={<Navigate to="/login" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
-

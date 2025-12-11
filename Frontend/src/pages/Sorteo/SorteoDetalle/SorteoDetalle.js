@@ -7,7 +7,7 @@ import { loginParticipante } from "../../../../services/ParticipanteService";
 export const useSorteoDetalle = () => {
     const { link } = useParams();
     const { username } = useAuthentication(false);
-    
+
     const [sorteo, setSorteo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -81,7 +81,7 @@ export const useSorteoDetalle = () => {
     };
 
     const handleCopyLink = async () => {
-        const linkUrl = `${window.location.origin}/sorteo/${sorteo.link}`;
+        const linkUrl = `${window.location.origin}/#/sorteo/${sorteo.link}`;
         try {
             await navigator.clipboard.writeText(linkUrl);
             setCopied(true);
