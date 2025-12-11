@@ -81,7 +81,7 @@ export const useSorteoDetalle = () => {
     };
 
     const handleCopyLink = async () => {
-        const linkUrl = `${window.location.origin}/#/sorteo/${sorteo.link}`;
+        const linkUrl = `${window.location.origin}/sorteo/${sorteo.link}`;
         try {
             await navigator.clipboard.writeText(linkUrl);
             setCopied(true);

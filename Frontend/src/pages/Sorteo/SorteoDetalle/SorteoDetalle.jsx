@@ -172,7 +172,7 @@ const DetalleSorteo = () => {
                             <p>
 
                                 <strong>Link de invitación:</strong> <br />
-                                <code className="text-break">{`${window.location.origin}/#/sorteo/${sorteo.link}`}</code>
+                                <code className="text-break">{`${window.location.origin}/sorteo/${sorteo.link}`}</code>
 
                             </p>
 
@@ -253,7 +253,7 @@ const DetalleSorteo = () => {
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>Link de invitación</Form.Label>
-                            <Form.Control readOnly value={sorteo ? `${window.location.origin}/#/sorteo/${sorteo.link}` : ""} />
+                            <Form.Control readOnly value={sorteo ? `${window.location.origin}/sorteo/${sorteo.link}` : ""} />
                         </Form.Group>
                         <div className="mt-3 d-flex justify-content-end">
                             <Button variant="primary" onClick={handleCopyLink}>
