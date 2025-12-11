@@ -1,82 +1,80 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useAuthentication from "../../../../hooks/useAuthentication";
 import { createSorteo, getSorteoById, updateSorteo } from "../../../../services/SorteoService";
 
 export const useSorteoForm = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const { isCheckingAuth, isAuthenticated } = useAuthentication(true);
 
     const [validated, setValidated] = useState(false);
     const [nombre, setNombre] = useState("");
     const [fecha, setFecha] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(!!id); // Solo si estamos editando
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!id) {
             return;
         }
+
+        // Esperar auth antes de cargar datos
+        if (isCheckingAuth) return;
+        if (!isAuthenticated) return;
+
         const fetchSorteo = () => {
+            setLoadingData(true);
             getSorteoById(id)
                 .then((sorteo) => {
                     setNombre(sorteo.nombre || "");
-                    const fechaFormateada = sorteo.fecha 
-                        ? new Date(sorteo.fecha).toISOString().split('T')[0] 
+                    const fechaFormateada = sorteo.fecha
+                        ? new Date(sorteo.fecha).toISOString().split('T')[0]
                         : "";
                     setFecha(fechaFormateada);
                 })
-                .catch(() => {
-                    alert("Error al cargar el sorteo");
-                    navigate("/");
+                .catch((err) => {
+                    setError(err.response?.data?.message || "Error al cargar el sorteo");
+                })
+                .finally(() => {
+                    setLoadingData(false);
                 });
         };
         fetchSorteo();
-    }, [id, navigate]);
+    }, [id, isCheckingAuth, isAuthenticated]);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
+
+        setError("");
+
         if (form.checkValidity() === false) {
             setValidated(true);
             return;
         }
 
         setValidated(true);
-        sendSorteoForm();
-    };
+        setLoading(true);
 
-    const sendSorteoForm = () => {
-        const sorteo = {
-            nombre,
-            fecha
-        };
+        const sorteo = { nombre, fecha };
 
-        if (id) {
-            sendSorteoUpdate(sorteo);
-        } else {
-            sendSorteoCreate(sorteo);
+        try {
+            if (id) {
+                await updateSorteo(id, sorteo);
+            } else {
+                await createSorteo(sorteo);
+            }
+            navigate("/");
+        } catch (err) {
+            const errorMessage = err.response?.data?.message ||
+                (id ? "Error al actualizar el sorteo" : "Error al crear el sorteo");
+            setError(errorMessage);
+        } finally {
+            setLoading(false);
         }
-    };
-
-    const sendSorteoUpdate = (sorteo) => {
-        updateSorteo(id, sorteo)
-            .then((sorteoActualizado) => {
-                console.log(sorteoActualizado);
-                navigate("/");
-            })
-            .catch(() => {
-                alert("Error al actualizar el sorteo");
-            });
-    };
-
-    const sendSorteoCreate = (sorteo) => {
-        createSorteo(sorteo)
-            .then((nuevoSorteo) => {
-                console.log(nuevoSorteo);
-                navigate("/");
-            })
-            .catch(() => {
-                alert("Error al crear el sorteo");
-            });
     };
 
     const handleCancel = () => {
@@ -88,11 +86,15 @@ export const useSorteoForm = () => {
         validated,
         nombre,
         fecha,
-        
+        loading,
+        loadingData: loadingData || isCheckingAuth,
+        error,
+        isEditing: !!id,
+
         // Manejadores de estado
         setNombre,
         setFecha,
-        
+
         // Manejadores de eventos
         handleSubmit,
         handleCancel

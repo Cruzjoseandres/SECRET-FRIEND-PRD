@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Form, FormControl, FormGroup, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Form, FormControl, FormGroup, Row, Spinner } from "react-bootstrap";
 import RequiredLabel from "../../../components/RequiredLabel";
 import Header from "../../../components/Header";
 import { useInscripcionForm } from "./ParticipanteCreate";
@@ -11,6 +11,8 @@ const FormInscripcion = () => {
         nombre,
         setNombre,
         codigoGenerado,
+        loading,
+        error,
         handleSubmit,
         handleCancel
     } = useInscripcionForm();
@@ -34,19 +36,27 @@ const FormInscripcion = () => {
                                         </Button>
                                     </>
                                 ) : (
-                                    <Form noValidate validated={validated} onSubmit={handleSubmit}> 
+                                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                         <Row>
                                             <Col>
                                                 <h1>Inscríbete al Sorteo</h1>
+
+                                                {error && (
+                                                    <Alert variant="danger" dismissible onClose={() => { }}>
+                                                        {error}
+                                                    </Alert>
+                                                )}
+
                                                 <FormGroup>
                                                     <RequiredLabel htmlFor="txtNombre">Nombre</RequiredLabel>
-                                                    <FormControl 
-                                                        id="txtNombre" 
-                                                        required 
-                                                        maxLength={100} 
+                                                    <FormControl
+                                                        id="txtNombre"
+                                                        required
+                                                        maxLength={100}
                                                         type="text"
-                                                        value={nombre} 
-                                                        onChange={(e) => setNombre(e.target.value)} 
+                                                        value={nombre}
+                                                        onChange={(e) => setNombre(e.target.value)}
+                                                        disabled={loading}
                                                     />
                                                     <FormControl.Feedback type="invalid">
                                                         El nombre es obligatorio
@@ -55,8 +65,24 @@ const FormInscripcion = () => {
                                             </Col>
                                         </Row>
                                         <div className="mt-2">
-                                            <Button variant="primary" type="submit">Inscribirse</Button>
-                                            <Button variant="secondary" className="ms-2" onClick={handleCancel}> 
+                                            <Button variant="primary" type="submit" disabled={loading}>
+                                                {loading ? (
+                                                    <>
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                            className="me-2"
+                                                        />
+                                                        Inscribiendo...
+                                                    </>
+                                                ) : (
+                                                    "Inscribirse"
+                                                )}
+                                            </Button>
+                                            <Button variant="secondary" className="ms-2" onClick={handleCancel} disabled={loading}>
                                                 Cancelar
                                             </Button>
                                         </div>

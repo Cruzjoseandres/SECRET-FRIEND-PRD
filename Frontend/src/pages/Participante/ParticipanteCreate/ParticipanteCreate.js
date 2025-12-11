@@ -5,38 +5,39 @@ import { createParticipante } from "../../../../services/ParticipanteService";
 export const useInscripcionForm = () => {
     const navigate = useNavigate();
     const { link } = useParams();
-    
+
     const [validated, setValidated] = useState(false);
     const [nombre, setNombre] = useState("");
     const [codigoGenerado, setCodigoGenerado] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        
+
+        setError("");
+
         if (form.checkValidity() === false) {
             setValidated(true);
             return;
         }
 
         setValidated(true);
-        
-        const participante = { nombre };
-        sendInscripcion(participante);
-    };
+        setLoading(true);
 
-    const sendInscripcion = (participante) => {
-        createParticipante(link, participante)
-            .then((response) => {
-                // const token = response.participante.linkParticipante.split('/').pop();
-                // navigate(`/participantes/${token}`);
-                setCodigoGenerado(response.participante.identificadorUnico)
-            })
-            .catch((error) => {
-                console.error("Error al inscribirse:", error);
-                alert("Error al inscribirte al sorteo. Intenta nuevamente.");
-            });
+        try {
+            const participante = { nombre };
+            const response = await createParticipante(link, participante);
+            setCodigoGenerado(response.participante.identificadorUnico);
+        } catch (err) {
+            const errorMessage = err.response?.data?.message ||
+                "Error al inscribirte al sorteo. Intenta nuevamente.";
+            setError(errorMessage);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCancel = () => {
@@ -48,10 +49,12 @@ export const useInscripcionForm = () => {
         validated,
         nombre,
         codigoGenerado,
-        
+        loading,
+        error,
+
         // Manejadores de estado
         setNombre,
-        
+
         // Manejadores de eventos
         handleSubmit,
         handleCancel
