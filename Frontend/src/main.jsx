@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import ListaSorteo from './pages/Sorteo/SorteoHome/ListaSorteo.jsx'
 import SorteoDetalle from './pages/Sorteo/SorteoDetalle/SorteoDetalle.jsx'
 import SorteoCreate from './pages/Sorteo/SorteoCreate/SorteoCreate.jsx'
@@ -23,7 +23,12 @@ createRoot(document.getElementById('root')).render(
         <Route path="/sorteo/:link/inscribirse" element={<CreateParticipante />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
+        {/* Redirect /index.html to home */}
+        <Route path="/index.html" element={<Navigate to="/" replace />} />
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
 )
+
