@@ -1,0 +1,48 @@
+tablas
+
+
+Usuarios
+username 
+password
+
+
+sorteos ---CRUD
+
+lista de nombres
+
+sorteo 
+nombre
+fecha
+
+
+participante
+nombre
+
+
+deseo
+descripcion
+
+participante sorteo
+id participante
+id sorteo
+
+
+
+
+
+participantesorteo
+id participante
+id sorteo
+
+
+
+
+tablas
+
+
+Usuarios
+sorteo
+participante
+deseo
+participantesorteo
+participantedeseo
