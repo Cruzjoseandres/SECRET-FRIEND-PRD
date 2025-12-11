@@ -20,11 +20,13 @@ app.use(bodyParser.json());
 app.use(fileUpload({
     limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
 }));
-// Para habilitar la BD
+// Para habilitar la BD - alter:true crea/actualiza tablas automáticamente
 db.sequelize.sync({
-    // force: true // drop tables and recreate
+    alter: true // Crea tablas que no existen y actualiza columnas
 }).then(() => {
-    console.log("db resync");
+    console.log("✅ Database synchronized successfully - tables created/updated");
+}).catch((error) => {
+    console.error("❌ Error synchronizing database:", error);
 });
 
 

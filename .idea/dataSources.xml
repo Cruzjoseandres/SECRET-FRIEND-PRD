@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="friend_secret_db@dpg-d4tclc7gi27c73de0d1g-a.virginia-postgres.render.com" uuid="7f2860e9-67f9-436d-b983-9856626a1727">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dpg-d4tclc7gi27c73de0d1g-a.virginia-postgres.render.com:5432/friend_secret_db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

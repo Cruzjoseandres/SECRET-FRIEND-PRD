@@ -20,10 +20,11 @@ const sequelize = process.env.DATABASE_URL
 
 sequelize.authenticate()
     .then(() => {
-        console.log('Connection has been established successfully.');
+        const isPostgres = !!process.env.DATABASE_URL;
+        console.log(`✅ Database connection established (${isPostgres ? 'PostgreSQL' : 'SQLite'})`);
     })
     .catch((error) => {
-        console.error('Unable to connect to the database:', error);
+        console.error('❌ Unable to connect to the database:', error);
     });
 
 module.exports = {
