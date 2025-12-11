@@ -15,7 +15,6 @@ import {
 } from "react-bootstrap";
 import Header from "../../../components/Header";
 import { useParticipanteDetalle } from "./ParticipanteDetalle";
-import { FRONTEND_URL } from "../../../../services/apiConfig";
 
 const DetalleParticipante = () => {
 
@@ -90,8 +89,8 @@ const DetalleParticipante = () => {
                                 <p><strong>Nombre:</strong> {participante.nombre}</p>
                                 <p><strong>Identificador:</strong> <Badge bg="secondary">{participante.identificadorUnico}</Badge></p>
                                 <p><strong>Link personal:</strong><br />
-                                    <a href={`${FRONTEND_URL}/participantes/${participante.linkParticipante}`} target="_blank" rel="noopener noreferrer">
-                                        <code className="text-break">{participante.linkParticipante}</code>
+                                    <a href={`${window.location.origin}/participantes/${participante.linkParticipante}`} target="_blank" rel="noopener noreferrer">
+                                        <code className="text-break">{`${window.location.origin}/participantes/${participante.linkParticipante}`}</code>
                                     </a>
                                 </p>
                             </Card.Body>
