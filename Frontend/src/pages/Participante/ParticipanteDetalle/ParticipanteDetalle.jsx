@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap";
 import Header from "../../../components/Header";
 import { useParticipanteDetalle } from "./ParticipanteDetalle";
-import { FRONTEND_URL } from "../../../services/apiConfig";
+import { FRONTEND_URL } from "../../../../services/apiConfig";
 
 const DetalleParticipante = () => {
 
