@@ -23,10 +23,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/sorteo/:link/inscribirse" element={<CreateParticipante />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
-        {/* Redirect /index.html to home */}
-        <Route path="/index.html" element={<Navigate to="/" replace />} />
-        {/* Catch-all route for 404 */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Redirect /index.html to home (for Render SPA compatibility) */}
+        <Route path="/index.html" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
