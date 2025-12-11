@@ -5,10 +5,10 @@ import { deleteSorteo, getAllSorteos } from "../../../../services/SorteoService"
 
 export const useListaSorteos = () => {
     const navigate = useNavigate();
-    useAuthentication(true); // Validar autenticación
-    
+    const { isCheckingAuth, isAuthenticated } = useAuthentication(true); // Validar autenticación
+
     const [listaSorteo, setListaSorteo] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); // Empezar en true para mostrar carga inicial
 
     const fetchSorteos = () => {
         setLoading(true);
@@ -24,10 +24,22 @@ export const useListaSorteos = () => {
             });
     };
 
+    // Solo cargar sorteos cuando la verificación de auth termine Y el usuario esté autenticado
     useEffect(() => {
+        if (isCheckingAuth) {
+            // Todavía estamos verificando autenticación, no hacer nada
+            return;
+        }
+
+        if (!isAuthenticated) {
+            // No está autenticado, se redirige desde useAuthentication
+            setLoading(false);
+            return;
+        }
+
+        // Autenticado, cargar sorteos
         fetchSorteos();
-        // eslint-disable-next-line
-    }, []);
+    }, [isCheckingAuth, isAuthenticated]);
 
     const handleEdit = (sorteo) => {
         const id = sorteo.id || sorteo.idSorteo;
@@ -57,8 +69,8 @@ export const useListaSorteos = () => {
     return {
         // Estado
         listaSorteo,
-        loading,
-        
+        loading: loading || isCheckingAuth, // Mostrar carga mientras verifica auth O carga sorteos
+
         // Handlers
         handleEdit,
         handleView,
